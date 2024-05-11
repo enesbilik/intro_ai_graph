@@ -1,0 +1,3 @@
+/Users/enes/Desktop/yapay_zeka_odev/cmake-build-debug/CMakeFiles/yapay_zeka_odev.dir
+/Users/enes/Desktop/yapay_zeka_odev/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/enes/Desktop/yapay_zeka_odev/cmake-build-debug/CMakeFiles/rebuild_cache.dir
