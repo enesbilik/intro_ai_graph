@@ -101,7 +101,6 @@ State *Create_Goal_State() {
     if (state == NULL)
         Warning_Memory_Allocation();
 
-    // Kulelerin başlangıç durumunu oluşturalım
     for (int i = 0; i < DISK_NUMBER; i++) {
         state->rodA[i] = 0; // Büyük diskler altta, küçük diskler üstte
         state->rodB[i] = 0;

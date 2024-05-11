@@ -24,9 +24,8 @@ State *Create_State()
     if (state == NULL)
         Warning_Memory_Allocation();
 
-    // Kulelerin başlangıç durumunu oluşturalım
     for (int i = 0; i < DISK_NUMBER; i++) {
-        state->rodA[i] = DISK_NUMBER - i; // Büyük diskler altta, küçük diskler üstte
+        state->rodA[i] = DISK_NUMBER - i;
         state->rodB[i] = 0;
         state->rodC[i] = 0;
     }
@@ -91,120 +90,11 @@ void Print_Action(const enum ACTIONS action)
         break;
     }
 }
-/*
-//______________________________________________________________________________
-int Result(const State *const parent_state, const enum ACTIONS action, Transition_Model *const trans_model)
-{
-    State new_state = *parent_state;
-
-    // Hareketi gerçekleştirelim
-    int disk;
-    switch (action) {
-        case Move_A_to_B:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodA[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // A'da disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodB[i] == 0) {
-                    new_state.rodB[i] = parent_state->rodA[disk];
-                    new_state.rodA[disk] = 0;
-                    break;
-                }
-            }
-            break;
-        case Move_A_to_C:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodA[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // A'da disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodC[i] == 0) {
-                    new_state.rodC[i] = parent_state->rodA[disk];
-                    new_state.rodA[disk] = 0;
-                    break;
-                }
-            }
-            break;
-        case Move_B_to_A:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodB[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // B'de disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodA[i] == 0) {
-                    new_state.rodA[i] = parent_state->rodB[disk];
-                    new_state.rodB[disk] = 0;
-                    break;
-                }
-            }
-            break;
-        case Move_B_to_C:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodB[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // B'de disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodC[i] == 0) {
-                    new_state.rodC[i] = parent_state->rodB[disk];
-                    new_state.rodB[disk] = 0;
-                    break;
-                }
-            }
-            break;
-        case Move_C_to_A:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodC[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // C'de disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodA[i] == 0) {
-                    new_state.rodA[i] = parent_state->rodC[disk];
-                    new_state.rodC[disk] = 0;
-                    break;
-                }
-            }
-            break;
-        case Move_C_to_B:
-            for (disk = 0; disk < DISK_NUMBER; disk++) {
-                if (parent_state->rodC[disk] != 0) {
-                    break;
-                }
-            }
-            if (disk == DISK_NUMBER) return FALSE; // C'de disk yok
-            for (int i = DISK_NUMBER - 1; i >= 0; i--) {
-                if (new_state.rodB[i] == 0) {
-                    new_state.rodB[i] = parent_state->rodC[disk];
-                    new_state.rodC[disk] = 0;
-                    break;
-                }
-            }
-            break;
-    }
-
-    trans_model->new_state = new_state;
-    trans_model->step_cost = 1; // Her adımda maliyeti 1 olarak belirleyelim
-
-    return TRUE;
-}
-*/
 int Result(const State *const parent_state, const enum ACTIONS action, Transition_Model *const trans_model) {
     State new_state = *parent_state;
-    // Hareketi gerçekleştirelim
     int disk_to_move_index = -1;
     int target_rod_index = -1;
 
-    // Hedef çubuktaki en küçük diski bul
     switch (action) {
         case Move_A_to_B:
             disk_to_move_index = FindDiskToMoveIndex(new_state.rodA);
@@ -249,19 +139,18 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
     MoveDisk(&new_state, action, disk_to_move_index, target_rod_index);
 
     trans_model->new_state = new_state;
-    trans_model->step_cost = 1; // Her adımda maliyeti 1 olarak belirleyelim
+    trans_model->step_cost = 1;
 
     return TRUE;
 }
 
-// Hedef çubuktaki en küçük boş indisi bul
 int FindTargetRodIndex(int rod[]) {
     for (int i =0; i < DISK_NUMBER; i++) {
         if (rod[i] == 0) {
             return i;
         }
     }
-    return -1; // Boş yer yok
+    return -1;
 }
 int FindDiskToMoveIndex(int rod[]) {
     for (int i = DISK_NUMBER - 1; i >=0 ; i--) {
@@ -269,7 +158,7 @@ int FindDiskToMoveIndex(int rod[]) {
             return i;
         }
     }
-    return -1; // Boş yer yok
+    return -1;
 }
 // Hareketin geçerli olup olmadığını kontrol et
 int IsValidMove(const State *const state, const enum ACTIONS action, int disk_to_move_index, int target_rod_index) {
@@ -289,33 +178,30 @@ int IsValidMove(const State *const state, const enum ACTIONS action, int disk_to
             }
             break;
         case Move_A_to_C:
-            // Hedef çubuktaki en üst disk boyutunu kontrol et
+
             if (state->rodC[target_rod_index - 1] < state->rodA[disk_to_move_index]) {
-                return 0; // Geçersiz hareket, büyük disk üzerine küçük disk
+                return 0;
             }
             break;
         case Move_B_to_A:
-            // Hedef çubuktaki en üst disk boyutunu kontrol et
+
             if (state->rodA[target_rod_index  - 1 ] < state->rodB[disk_to_move_index]) {
-                return 0; // Geçersiz hareket, büyük disk üzerine küçük disk
+                return 0;
             }
             break;
         case Move_B_to_C:
-            // Hedef çubuktaki en üst disk boyutunu kontrol et
             if (state->rodC[target_rod_index - 1] < state->rodB[disk_to_move_index]) {
-                return 0; // Geçersiz hareket, büyük disk üzerine küçük disk
+                return 0;
             }
             break;
         case Move_C_to_A:
-            // Hedef çubuktaki en üst disk boyutunu kontrol et
             if (state->rodA[target_rod_index - 1] < state->rodC[disk_to_move_index]) {
-                return 0; // Geçersiz hareket, büyük disk üzerine küçük disk
+                return 0;
             }
             break;
         case Move_C_to_B:
-            // Hedef çubuktaki en üst disk boyutunu kontrol et
             if (state->rodB[target_rod_index - 1] < state->rodC[disk_to_move_index]) {
-                return 0; // Geçersiz hareket, büyük disk üzerine küçük disk
+                return 0;
             }
             break;
     }
@@ -362,13 +248,9 @@ void MoveDisk(State *state, const enum ACTIONS action, int disk_to_move_index, i
 //______________________________________________________________________________
 float Compute_Heuristic_Function(const State *const state, const State *const goal)
 {
-    // Burada herhangi bir tutarlı bir sezgisel tahmin hesaplaması yapabilirsiniz.
-    // Ancak, Hanoi kuleleri problemi için basit bir tahmin olarak hamle sayısını kullanabiliriz.
-    // Çünkü her hamlede bir disk hareket ettiriliyor ve hedef duruma ulaşmak için en fazla
     // 2^n - 1 adım gerekir, n disk sayısı.
-    // Bu tahminin admissible olduğu ve herhangi bir durumu asla aşırı tahmin etmeyeceği garanti edilir.
+    // En fazla adım sayısını hesapladık.
 
-    // En fazla adım sayısını döndürelim
     return (float)((1 << DISK_NUMBER) - 1);
 }
 

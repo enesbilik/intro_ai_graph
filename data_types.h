@@ -6,14 +6,8 @@
 #define DATA_TYPES_H
 
 
-// ==================== WRITE YOUR OPTIONAL DATA TYPES IF YOU NEED =============
 
-enum TOWERS
-{
-    Tower_A,
-    Tower_B,
-    Tower_C
-};
+// ==================== WRITE YOUR OPTIONAL DATA TYPES IF YOU NEED =============
 
 // ====== WRITE YOUR COMPULSORY (BUT SPECIFIC TO THE PROBLEM) DATA TYPES =======
 
@@ -29,10 +23,10 @@ enum ACTIONS // All possible actions
 
 typedef struct State
 {
-    int rodA[3]; // 1. çubuktaki diskler
-    int rodB[3]; // 2. çubuktaki diskler
-    int rodC[3]; // 3. çubuktaki diskler
-    float h_n; // Heuristic function
+    int rodA[3]; //disk sayısı
+     int rodB[3];
+    int rodC[3];
+    float h_n;
 
 } State;
 

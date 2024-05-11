@@ -90,7 +90,18 @@ Node *First_InsertFrontier_Search_TREE(const enum METHODS method, Node *const ro
 					Insert_Priority_Queue_A_Star(child, &frontier);
 					break;
 				case GeneralizedAStarSearch:
-					// complete here
+					if (temp_node != NULL) {
+						float child_eval = alpha * (child->path_cost + child->state.h_n) + (1 - alpha) * child->path_cost;
+						float temp_node_eval = alpha * (temp_node->path_cost + temp_node->state.h_n) + (1 - alpha) * temp_node->path_cost;
+
+						if (child_eval < temp_node_eval) // child.STATE has been in frontier with higher cost
+							Remove_Node_From_Frontier(temp_node, &frontier);
+						else // child.STATE has already been in frontier with lower cost
+							continue;
+					}
+					child->state.h_n = Compute_Heuristic_Function(&(child->state), goal_state);
+					Insert_Priority_Queue_A_Star(child, &frontier);
+					break;
 				default:
 					printf("ERROR: Unknown method in First_InsertFrontier_Search_TREE.\n");
 					Delete_Hash_Table(explorer_set);

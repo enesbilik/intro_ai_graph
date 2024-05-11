@@ -14,35 +14,31 @@ void Generate_HashTable_Key(const State *const state, unsigned char *key)
 {
     int index = 0;
 
-    // 1. çubuktaki diskleri anahtara ekle
+    // 1. çubuktaki diskleri anahtara eklemek için
     for (int i = 0; i < 3; i++) {
         if (state->rodA[i] != 0) {
-            key[index++] = 'A'; // Çubuğun adını ekleyelim
-            key[index++] = state->rodA[i] + '0'; // Diskin boyutunu ekleyelim
+            key[index++] = 'A';
+            key[index++] = state->rodA[i] + '0';
         }
     }
 
-    // 2. çubuktaki diskleri anahtara ekle
     for (int i = 0; i < 3; i++) {
         if (state->rodB[i] != 0) {
-            key[index++] = 'B'; // Çubuğun adını ekleyelim
-            key[index++] = state->rodB[i] + '0'; // Diskin boyutunu ekleyelim
+            key[index++] = 'B';
+            key[index++] = state->rodB[i] + '0';
         }
     }
 
-    // 3. çubuktaki diskleri anahtara ekle
     for (int i = 0; i < 3; i++) {
         if (state->rodC[i] != 0) {
-            key[index++] = 'C'; // Çubuğun adını ekleyelim
-            key[index++] = state->rodC[i] + '0'; // Diskin boyutunu ekleyelim
+            key[index++] = 'C';
+            key[index++] = state->rodC[i] + '0';
         }
     }
 
-    // Sonuna null karakterini ekleyelim
     key[index] = '\0';
 
     //printf("Anahtar: %s\n", key);
-
 
     if (index > MAX_KEY_SIZE)
     {
